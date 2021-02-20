@@ -42,6 +42,7 @@ const ProductEditScreen = ({ match, history }) => {
     } else {
       if (!product.name || product._id !== productId) {
         dispatch(listProductDetails(productId));
+      } else if (product.name === 'sample name') {
       } else {
         setName(product.name);
         setPrice(product.email);

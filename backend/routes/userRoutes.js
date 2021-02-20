@@ -12,7 +12,10 @@ const router = express.Router();
 
 router.post('/login', authUser);
 
-router.route('/').post(admin, registerUser).get(protect, admin, getAllUsers);
+router
+  .route('/')
+  .post(protect, admin, registerUser)
+  .get(protect, admin, getAllUsers);
 router
   .route('/:id')
   .get(protect, admin, getUserById)

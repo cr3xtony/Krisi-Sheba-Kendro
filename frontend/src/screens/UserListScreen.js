@@ -24,7 +24,9 @@ const UserListScreen = ({ history }) => {
     }
   }, [dispatch, userInfo, history, successDelete]);
 
-  const createUserHandler = () => {};
+  const createUserHandler = () => {
+    history.push(`/users/create`);
+  };
 
   const deleteHandler = (id) => {
     if (window.confirm('Are you sure ? ')) {
