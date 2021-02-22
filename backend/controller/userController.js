@@ -23,7 +23,16 @@ const authUser = asyncHandler(async (req, res) => {
 });
 
 const registerUser = asyncHandler(async (req, res) => {
-  const { name, email, password, krisiCardNumber, district, thana } = req.body;
+  const {
+    name,
+    email,
+    password,
+    krisiCardNumber,
+    nid,
+    district,
+    thana,
+    phoneNumber,
+  } = req.body;
   const userExist = await User.findOne({ email });
   if (userExist) {
     res.status(400);
@@ -34,8 +43,10 @@ const registerUser = asyncHandler(async (req, res) => {
     email,
     password,
     krisiCardNumber,
+    nid,
     district,
     thana,
+    phoneNumber,
   });
   if (user) {
     res.status(201).json({
@@ -73,4 +84,76 @@ const deleteUser = asyncHandler(async (req, res, id) => {
   }
 });
 
-export { authUser, registerUser, getAllUsers, getUserById, deleteUser };
+const getUserProfile = asyncHandler(async (req, res) => {
+  const user = await User.findById(req.user._id);
+  if (user) {
+    res.json({
+      _id: user._id,
+      name: user.name,
+      email: user.email,
+      krisiCardNumber: user.krisiCardNumber,
+      district: user.district,
+      thana: user.thana,
+    });
+  } else {
+    res.status(404);
+    throw new Error('User not found');
+  }
+});
+
+const updateUserProfile = asyncHandler(async (req, res) => {
+  const user = await User.findById(req.user._id);
+  if (user) {
+    user.name = req.body.name || user.name;
+    user.email = req.body.email || user.email;
+    user.krisiCardNumber = req.body.krisiCardNumber || user.krisiCardNumber;
+    user.district = req.body.district || user.district;
+    user.thana = req.body.thana || user.thana;
+    if (req.body.password) {
+      user.password = req.body.password;
+    }
+    const updateUser = await user.save();
+
+    res.json({
+      _id: user._id,
+      name: user.name,
+      email: user.email,
+      krisiCardNumber: user.krisiCardNumber,
+      district: user.district,
+      thana: user.thana,
+    });
+  } else {
+    res.status(404);
+    throw new Error('User not found');
+  }
+});
+const updateUserByAdmin = asyncHandler(async (req, res) => {
+  const user = await User.findById(req.params.id);
+  if (user) {
+    user.name = req.body.name || user.name;
+    user.email = req.body.email || user.email;
+    user.isAdmin = req.body.isAdmin || user.isAdmin;
+    const updateUser = await user.save();
+
+    res.json({
+      _id: updateUser._id,
+      name: updateUser.name,
+      email: updateUser.email,
+      isAdmin: updateUser.isAdmin,
+    });
+  } else {
+    res.status(404);
+    throw new Error('User not found');
+  }
+});
+
+export {
+  authUser,
+  registerUser,
+  getAllUsers,
+  getUserById,
+  deleteUser,
+  getUserProfile,
+  updateUserProfile,
+  updateUserByAdmin,
+};

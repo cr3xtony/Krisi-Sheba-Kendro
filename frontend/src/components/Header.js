@@ -45,19 +45,49 @@ const Header = () => {
                       <NavDropdown.Item>Users </NavDropdown.Item>
                     </LinkContainer>
                   </Navbar>
+
+                  <Navbar>
+                    <LinkContainer to="/orders">
+                      <NavDropdown.Item>Orders </NavDropdown.Item>
+                    </LinkContainer>
+                  </Navbar>
+                </>
+              ) : userInfo && !userInfo.isAdmin ? (
+                <>
+                  <Navbar>
+                    <NavDropdown title={userInfo.name} id="username">
+                      <LinkContainer to="/profile">
+                        <NavDropdown.Item>Profile</NavDropdown.Item>
+                      </LinkContainer>
+                      <NavDropdown.Item onClick={logoutHandler}>
+                        Logout
+                      </NavDropdown.Item>
+                    </NavDropdown>
+                  </Navbar>
+                  <Navbar>
+                    <LinkContainer to="/cart">
+                      <Nav.Link>
+                        <i className="fas fa-shopping-cart"></i> Cart
+                      </Nav.Link>
+                    </LinkContainer>
+                  </Navbar>
                 </>
               ) : (
                 <>
-                  <LinkContainer to="/cart">
-                    <Nav.Link>
-                      <i className="fas fa-shopping-cart"></i> Cart
-                    </Nav.Link>
-                  </LinkContainer>
-                  <LinkContainer to="/login">
-                    <Nav.Link>
-                      <i className="fas fa-sign-in-alt"></i> Sign In
-                    </Nav.Link>
-                  </LinkContainer>
+                  <Navbar>
+                    <LinkContainer to="/login">
+                      <Nav.Link>
+                        <i className="fas fa-sign-in-alt"></i> Sign In
+                      </Nav.Link>
+                    </LinkContainer>
+                  </Navbar>
+                  <Navbar>
+                    <LinkContainer to="/users/create">
+                      <Nav.Link>
+                        <i className="fas fa-user-plus"></i> Sign Up
+                      </Nav.Link>
+                    </LinkContainer>
+                  </Navbar>
                 </>
               )}
             </Nav>

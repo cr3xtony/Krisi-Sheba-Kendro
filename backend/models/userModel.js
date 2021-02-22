@@ -20,6 +20,12 @@ const userSchema = mongoose.Schema(
       required: true,
       default: false,
     },
+    nid: {
+      type: Number,
+    },
+    phoneNumber: {
+      type: Number,
+    },
     krisiCardNumber: {
       type: Number,
     },

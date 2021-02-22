@@ -59,6 +59,8 @@ const UserListScreen = ({ history }) => {
               <th>Krisi Card Number</th>
               <th>District</th>
               <th>Thana</th>
+              <th>NID</th>
+              <th>Phone Number</th>
             </tr>
           </thead>
           <tbody>
@@ -74,8 +76,10 @@ const UserListScreen = ({ history }) => {
                     <td>{user.krisiCardNumber}</td>
                     <td>{user.district}</td>
                     <td>{user.thana}</td>
+                    <td>{user.nid}</td>
+                    <td>{user.phoneNumber}</td>
                     <td>
-                      <Link to={`/admin/user/${user._id}/edit`}>
+                      <Link to={`/user/${user._id}/edit`}>
                         <Button variant="light" className="btn-sm">
                           <i className="fas fa-edit"></i>
                         </Button>

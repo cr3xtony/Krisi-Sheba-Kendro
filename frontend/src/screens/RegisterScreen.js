@@ -4,6 +4,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import FormContainer from '../components/FormContainer';
 import { register } from '../actions/userActions';
 import Message from '../components/Message';
+import { USER_UPDATE_RESET } from '../constants/userConstants';
 
 const RegisterScreen = ({ location, history }) => {
   const [email, setEmail] = useState('');
@@ -14,23 +15,38 @@ const RegisterScreen = ({ location, history }) => {
   const [district, setDistrict] = useState('');
   const [thana, setThana] = useState('');
   const [message, setMessage] = useState(null);
+  const [nid, setNid] = useState('');
+  const [phoneNumber, setPhoneNumber] = useState('');
 
   const dispatch = useDispatch();
   const userRegister = useSelector((state) => state.userRegister);
   const { error, success } = userRegister;
 
+  const userLogin = useSelector((state) => state.userLogin);
+  const { userInfo } = userLogin;
+
   useEffect(() => {
     if (success) {
-      history.push(`/users`);
+      history.push(`/login`);
+      dispatch({ type: USER_UPDATE_RESET });
     }
-  }, [history, success]);
+  }, [history, success, userInfo, dispatch]);
   const submitHandler = (e) => {
     e.preventDefault();
     if (password !== confirmPassword) {
       setMessage('Password Do Not Match');
     } else {
       dispatch(
-        register(name, email, password, krisiCardNumber, district, thana)
+        register(
+          name,
+          email,
+          password,
+          krisiCardNumber,
+          district,
+          thana,
+          nid,
+          phoneNumber
+        )
       );
     }
   };
@@ -79,16 +95,38 @@ const RegisterScreen = ({ location, history }) => {
             onChange={(e) => setConfirmPassword(e.target.value)}
           ></Form.Control>
         </Form.Group>
-
-        <Form.Group controlId="email">
-          <Form.Label>Krisi Card Number</Form.Label>
-          <Form.Control
-            type="number"
-            placeholder="Enter Krisi Card Number"
-            value={krisiCardNumber}
-            onChange={(e) => setkrisiCardNumber(e.target.value)}
-          ></Form.Control>
-        </Form.Group>
+        {!userInfo ? (
+          <>
+            <Form.Group controlId="nid">
+              <Form.Label>NID</Form.Label>
+              <Form.Control
+                type="number"
+                placeholder="Enter your Nid"
+                value={nid}
+                onChange={(e) => setNid(e.target.value)}
+              ></Form.Control>
+            </Form.Group>
+            <Form.Group controlId="phone">
+              <Form.Label>Phone Number(Bkash,Nogod)</Form.Label>
+              <Form.Control
+                type="number"
+                placeholder="Enter Your Phone Number"
+                value={phoneNumber}
+                onChange={(e) => setPhoneNumber(e.target.value)}
+              ></Form.Control>
+            </Form.Group>
+          </>
+        ) : (
+          <Form.Group controlId="email">
+            <Form.Label>Krisi Card Number</Form.Label>
+            <Form.Control
+              type="number"
+              placeholder="Enter Krisi Card Number"
+              value={krisiCardNumber}
+              onChange={(e) => setkrisiCardNumber(e.target.value)}
+            ></Form.Control>
+          </Form.Group>
+        )}
 
         <Form.Group controlId="email">
           <Form.Label>District</Form.Label>
