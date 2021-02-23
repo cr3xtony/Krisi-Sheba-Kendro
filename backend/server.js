@@ -1,7 +1,6 @@
 import express from 'express';
 import dotenv from 'dotenv';
 import path from 'path';
-import morgan from 'morgan';
 
 import connectDB from './config/db.js';
 
@@ -23,6 +22,10 @@ app.use('/api/upload', uploadRoutes);
 app.use('/api/orders', orderRoutes);
 const __dirname = path.resolve();
 app.use('/uploads', express.static(path.join(__dirname, '/uploads')));
+app.use(express.static(path.join(__dirname, '/frontend/build')));
+app.get('*', (req, res) =>
+  res.sendFile(path.resolve(__dirname, 'frontend', 'build', 'index.html'))
+);
 
 app.listen(
   process.env.PORT,
